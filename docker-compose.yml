@@ -1,0 +1,31 @@
+
+services:
+
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bed_pizza
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./infra/data:/var/lib/mysql
+      - ./infra/script/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  demoapi:
+    build: .
+    container_name: demo_api
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/bed_pizza?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
+volumes:
+  mysql_data:

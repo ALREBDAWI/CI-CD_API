@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Docker database data
+infra/data/
+
+# log files
+*.log
