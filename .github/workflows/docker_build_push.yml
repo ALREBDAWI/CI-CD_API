@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      -master
+      - master
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,7 +16,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '21'
-          distribution: 'tamurin'
+          distribution: 'temurin'
           
       - name: build using maven
         run: mvn clean install
