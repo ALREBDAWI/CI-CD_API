@@ -1,6 +1,7 @@
 name: CI_CD_API
 
 on: 
+  workflow_dispatch:
   push:
     branches:
       -master
