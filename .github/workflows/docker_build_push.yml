@@ -8,6 +8,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: bed_pizza
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        
     steps:
       - name: checkout project
         uses: actions/checkout@v4
@@ -17,9 +28,14 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+          cash: 'maven'
           
       - name: build using maven
-        run: mvn clean install 
+        run: mvn clean install
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/bed_pizza
+          SPRING_DATASOURCE_USERNAME: root
+          SPRING_DATASOURCE_PASSWORD: root
 
       - name: login to docker hub
         uses: docker/login-action@v3
